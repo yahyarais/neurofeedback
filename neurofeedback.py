@@ -61,25 +61,25 @@ def main(i):
             # filters work in-place
             # Check Brainflow docs for more filters
             if count == 0:
-                DataFilter.perform_bandstop(data[channel], sampling_rate, 60.0, 4.0, 4,
-                                            FilterTypes.BUTTERWORTH.value, 0)  # bandstop 58 - 62
-                DataFilter.perform_bandpass(data[channel], sampling_rate, 21.0, 20.0, 4,
+                DataFilter.perform_bandstop(data[channel], BoardShim.get_sampling_rate(board_id), 48.0, 62.0, 4,
+                                            FilterTypes.BUTTERWORTH.value, 0)  # bandstop 48 - 62
+                DataFilter.perform_bandpass(data[channel], BoardShim.get_sampling_rate(board_id), 2.0, 50.0, 4,
                                             FilterTypes.BESSEL.value, 0)  # bandpass 11 - 31
-            if count == 1:
-                DataFilter.perform_bandstop(data[channel], sampling_rate, 60.0, 4.0, 4,
-                                            FilterTypes.BUTTERWORTH.value, 0)  # bandstop 58 - 62
-                DataFilter.perform_bandpass(data[channel], sampling_rate, 21.0, 20.0, 4,
-                                            FilterTypes.BESSEL.value, 0)  # bandpass 11 - 31
-            if count == 2:
-                DataFilter.perform_bandstop(data[channel], sampling_rate, 60.0, 4.0, 4,
-                                            FilterTypes.BUTTERWORTH.value, 0)  # bandstop 58 - 62
-                DataFilter.perform_bandpass(data[channel], sampling_rate, 21.0, 20.0, 4,
-                                            FilterTypes.BESSEL.value, 0)  # bandpass 11 - 31
-            if count == 3:
-                DataFilter.perform_bandstop(data[channel], sampling_rate, 60.0, 4.0, 4,
-                                            FilterTypes.BUTTERWORTH.value, 0)  # bandstop 58 - 62
-                DataFilter.perform_bandpass(data[channel], sampling_rate, 21.0, 20.0, 4,
-                                            FilterTypes.BESSEL.value, 0)  # bandpass 11 - 31
+            # if count == 1:
+            #     DataFilter.perform_bandstop(data[channel], sampling_rate, 60.0, 4.0, 4,
+            #                                 FilterTypes.BUTTERWORTH.value, 0)  # bandstop 58 - 62
+            #     DataFilter.perform_bandpass(data[channel], sampling_rate, 21.0, 20.0, 4,
+            #                                 FilterTypes.BESSEL.value, 0)  # bandpass 11 - 31
+            # if count == 2:
+            #     DataFilter.perform_bandstop(data[channel], sampling_rate, 60.0, 4.0, 4,
+            #                                 FilterTypes.BUTTERWORTH.value, 0)  # bandstop 58 - 62
+            #     DataFilter.perform_bandpass(data[channel], sampling_rate, 21.0, 20.0, 4,
+            #                                 FilterTypes.BESSEL.value, 0)  # bandpass 11 - 31
+            # if count == 3:
+            #     DataFilter.perform_bandstop(data[channel], sampling_rate, 60.0, 4.0, 4,
+            #                                 FilterTypes.BUTTERWORTH.value, 0)  # bandstop 58 - 62
+            #     DataFilter.perform_bandpass(data[channel], sampling_rate, 21.0, 20.0, 4,
+            #                                 FilterTypes.BESSEL.value, 0)  # bandpass 11 - 31
 
         # Brainflow ML Model
         bands = DataFilter.get_avg_band_powers(
@@ -87,6 +87,8 @@ def main(i):
         feature_vector = np.concatenate((bands[0], bands[1]))
 
         # calc concentration
+        print(BrainFlowMetrics.CONCENTRATION)
+        exit()
         concentration_params = BrainFlowModelParams(
             BrainFlowMetrics.CONCENTRATION.value, BrainFlowClassifiers.KNN.value)
         concentration = MLModel(concentration_params)
